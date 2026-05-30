@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Статті</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <h1>Всі статті</h1>
+    
+    <div class="card" style="background-color: snow;">
+        <form method="GET" style="display: flex; gap: 10px; align-items: center;">
+            <label>Сортувати за:</label>
+            <select name="sort" style="padding: 5px; border: 1px solid silver;">
+                <option value="pub_date_desc" {% if sort_by == 'pub_date_desc' %}selected{% endif %}>Спочатку нові</option>
+                <option value="pub_date_asc" {% if sort_by == 'pub_date_asc' %}selected{% endif %}>Спочатку старі</option>
+                <option value="comments_desc" {% if sort_by == 'comments_desc' %}selected{% endif %}>Найбільше коментарів</option>
+                <option value="comments_asc" {% if sort_by == 'comments_asc' %}selected{% endif %}>Найменше коментарів</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Застосувати</button>
+        </form>
+    </div>
+
+    {% for article in articles %}
+        <div class="card">
+            <h2><a href="{% url 'article_detail' article.id %}" style="color: slategray;">{{ article.title }}</a></h2>
+            <p class="meta">
+                Автор: {{ article.author.username }} | 
+                Категорія: {{ article.category.name }} | 
+                Дата: {{ article.pub_date|date:"d.m.Y H:i" }} |
+                Коментарів: {{ article.comment_count }}
+            </p>
+        </div>
+    {% endfor %}
+</body>
+</html>

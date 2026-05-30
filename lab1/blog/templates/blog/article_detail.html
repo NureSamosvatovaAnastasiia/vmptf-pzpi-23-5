@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article.title }}</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <div class="card">
+        <h1>{{ article.title }}</h1>
+        <p class="meta">Автор: {{ article.author.username }} | Дата: {{ article.pub_date|date:"d.m.Y H:i" }}</p>
+        <p style="line-height: 1.6;">{{ article.text }}</p>
+        {% if request.user == article.author or request.user.is_superuser %}
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <a href="{% url 'edit_article' article.id %}" class="btn btn-neutral">Редагувати</a>
+                <a href="{% url 'delete_article' article.id %}" class="btn btn-danger" onclick="return confirm('Ви впевнені, що хочете видалити статтю?');">Видалити</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <h3>Коментарі</h3>
+    {% for comment in comments %}
+        <div class="card" style="background-color: snow; border-color: gainsboro;">
+            <p class="meta"><strong>{{ comment.author.username }}</strong> ({{ comment.created_at|date:"d.m.Y H:i" }})</p>
+            <p>{{ comment.text }}</p>
+       
+            {% if request.user == comment.author or request.user.is_superuser %}
+                <a href="{% url 'delete_comment' comment.id %}" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">Видалити коментар</a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p style="color: silver;">Коментарів ще немає.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <div class="card" style="margin-top: 20px;">
+            <h4>Додати коментар</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="text" rows="3" required style="width: 100%; border: 1px solid silver; margin-bottom: 10px;"></textarea>
+                <button type="submit" class="btn btn-primary">Надіслати</button>
+            </form>
+        </div>
+    {% else %}
+        <p>Увійдіть, щоб залишити коментар.</p>
+    {% endif %}
+</body>
+</html>

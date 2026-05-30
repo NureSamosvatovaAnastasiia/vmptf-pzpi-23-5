@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Реєстрація</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <div class="card" style="max-width: 400px; margin: 50px auto;">
+        <h2>Реєстрація</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="line-height: 1.8; color: dimgray; margin-bottom: 15px;">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Зареєструватися</button>
+        </form>
+        <p style="margin-top: 15px; text-align: center;">
+            Вже маєте акаунт? <a href="{% url 'login' %}" style="color: slategray;">Увійти</a>
+        </p>
+        <a href="{% url 'category_list' %}" style="display: block; text-align: center; margin-top: 10px; color: gray;">На головну</a>
+    </div>
+</body>
+</html>
