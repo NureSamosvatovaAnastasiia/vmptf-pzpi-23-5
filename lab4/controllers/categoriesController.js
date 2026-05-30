@@ -29,3 +29,21 @@ export const deleteCategory = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const [updatedCategory] = await db.update(schema.categories)
+      .set({ name })
+      .where(eq(schema.categories.id, parseInt(req.params.id)))
+      .returning();
+      
+    if (!updatedCategory) {
+      return res.status(404).json({ error: "Категорію не знайдено" });
+    }
+    
+    res.json(updatedCategory);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

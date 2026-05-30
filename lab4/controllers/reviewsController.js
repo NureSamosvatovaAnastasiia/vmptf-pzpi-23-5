@@ -15,3 +15,27 @@ export const createReview = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateReview = async (req, res) => {
+  try {
+    const { rating, text } = req.body;
+    const [updatedReview] = await db.update(schema.reviews)
+      .set({ rating, text })
+      .where(eq(schema.reviews.id, parseInt(req.params.id)))
+      .returning();
+      
+    res.json(updatedReview);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteReview = async (req, res) => {
+  try {
+    await db.delete(schema.reviews)
+      .where(eq(schema.reviews.id, parseInt(req.params.id)));
+    res.json({ message: "Відгук успішно видалено" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

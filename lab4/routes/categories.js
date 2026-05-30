@@ -1,6 +1,11 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
-import { getCategories, createCategory, deleteCategory } from '../controllers/categoriesController.js';
+import { 
+  getCategories, 
+  createCategory, 
+  deleteCategory, 
+  updateCategory 
+} from '../controllers/categoriesController.js';
 
 const router = express.Router();
 
@@ -62,5 +67,33 @@ router.post('/', authenticateToken, createCategory);
  *         description: Категорію видалено
  */
 router.delete('/:id', authenticateToken, deleteCategory);
+
+/**
+ * @swagger
+ * /api/categories/{id}:
+ *   put:
+ *     summary: Оновити назву категорії за ID
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Категорію оновлено
+ */
+
+router.put('/:id', authenticateToken, updateCategory);
 
 export default router;

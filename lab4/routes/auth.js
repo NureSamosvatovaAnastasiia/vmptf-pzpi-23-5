@@ -1,5 +1,13 @@
 import express from 'express';
-import { registerUser, loginUser } from '../controllers/authController.js';
+import { authenticateToken } from '../middleware/auth.js';
+import { 
+  registerUser, 
+  loginUser, 
+} from '../controllers/authController.js';
+import { 
+  updateUser, 
+  deleteUser 
+} from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -57,5 +65,42 @@ router.post('/register', registerUser);
  *         description: Успішний вхід, повертає токен
  */
 router.post('/login', loginUser);
+
+
+/**
+ * @swagger
+ * /api/auth/profile:
+ *   put:
+ *     summary: Оновити дані поточного користувача (ім'я або пароль)
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Дані користувача оновлено
+ */
+router.put('/profile', authenticateToken, updateUser);
+
+/**
+ * @swagger
+ * /api/auth/profile:
+ *   delete:
+ *     summary: Видалити акаунт поточного користувача
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Акаунт успішно видалено
+ */
+router.delete('/profile', authenticateToken, deleteUser);
+
 
 export default router;
