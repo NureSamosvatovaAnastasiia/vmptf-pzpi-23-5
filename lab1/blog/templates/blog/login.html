@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <div class="card" style="max-width: 400px; margin: 50px auto;">
+        <h2>Вхід в систему</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="line-height: 1.8; color: dimgray; margin-bottom: 15px;">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Увійти</button>
+        </form>
+        <p style="margin-top: 15px; text-align: center;">
+            Немає акаунту? <a href="{% url 'register' %}" style="color: slategray;">Зареєструватися</a>
+        </p>
+        <a href="{% url 'category_list' %}" style="display: block; text-align: center; margin-top: 10px; color: gray;">На головну</a>
+    </div>
+</body>
+</html>

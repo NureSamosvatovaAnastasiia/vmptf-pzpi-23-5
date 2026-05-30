@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування статті</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <div class="card">
+        <h1>Редагування статті</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; color: dimgray;">Заголовок:</label>
+                <input type="text" name="title" value="{{ article.title }}" required style="width: 100%; padding: 8px; border: 1px solid gainsboro; border-radius: 4px;">
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; color: dimgray;">Текст:</label>
+                <textarea name="text" rows="8" required style="width: 100%; padding: 8px; border: 1px solid gainsboro; border-radius: 4px;">{{ article.text }}</textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+            <a href="{% url 'article_detail' article.id %}" class="btn btn-neutral">Скасувати</a>
+        </form>
+    </div>
+</body>
+</html>
